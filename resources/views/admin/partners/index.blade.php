@@ -5,34 +5,33 @@
 <div class="p-6">
 
     {{-- HEADER --}}
-
     <div class="flex justify-between items-center mb-6">
 
-    <h1 class="text-3xl font-bold">
-        Manajemen Kategori
-    </h1>
+        <h1 class="text-3xl font-bold">
+            Manajemen Partner
+        </h1>
 
-    {{-- SEARCH --}}
-    <form action="{{ route('admin.categories.index') }}"
-          method="GET"
-          class="flex gap-2">
+        {{-- SEARCH --}}
+        <form action="{{ route('admin.partners.index') }}"
+              method="GET"
+              class="flex gap-2">
 
-        <input type="text"
-               name="search"
-               value="{{ $search ?? '' }}"
-               placeholder="Cari kategori..."
-               class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text"
+                   name="search"
+                   value="{{ $search ?? '' }}"
+                   placeholder="Cari partner..."
+                   class="border border-gray-300 rounded-lg px-4 py-2">
 
-        <button type="submit"
-                class="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg">
+            <button type="submit"
+                    class="bg-gray-800 text-white px-4 py-2 rounded-lg">
 
-            Search
+                Search
 
-        </button>
+            </button>
 
-    </form>
+        </form>
 
-</div>
+    </div>
 
     {{-- ALERT --}}
     @if(session('success'))
@@ -47,22 +46,27 @@
     <div class="bg-white shadow-lg rounded-lg p-5 mb-6">
 
         <h2 class="text-xl font-semibold mb-4">
-            Tambah Kategori
+            Tambah Partner
         </h2>
 
-        <form action="{{ route('admin.categories.store') }}"
+        <form action="{{ route('admin.partners.store') }}"
               method="POST"
-              class="flex gap-3">
+              enctype="multipart/form-data"
+              class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
             @csrf
 
             <input type="text"
                    name="name"
-                   placeholder="Masukkan nama kategori"
-                   class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                   placeholder="Nama Partner"
+                   class="border border-gray-300 rounded-lg px-4 py-2">
+
+            <input type="file"
+                   name="logo_url"
+                   class="border border-gray-300 rounded-lg px-4 py-2">
 
             <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg shadow">
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
 
                 Tambah
 
@@ -77,21 +81,14 @@
 
         <table class="w-full text-left">
 
-            <thead class="bg-gray-200 text-gray-700">
+            <thead class="bg-gray-200">
 
                 <tr>
 
-                    <th class="p-3">
-                        No
-                    </th>
-
-                    <th class="p-3">
-                        Nama Kategori
-                    </th>
-
-                    <th class="p-3 text-center">
-                        Aksi
-                    </th>
+                    <th class="p-3">No</th>
+                    <th class="p-3">Logo</th>
+                    <th class="p-3">Nama</th>
+                    <th class="p-3 text-center">Aksi</th>
 
                 </tr>
 
@@ -99,41 +96,51 @@
 
             <tbody>
 
-                @forelse($categories as $i => $category)
+                @forelse($partners as $i => $partner)
 
-                <tr class="border-b hover:bg-gray-50">
+                <tr class="border-b">
 
                     <td class="p-3">
                         {{ $i + 1 }}
                     </td>
 
                     <td class="p-3">
-                        {{ $category->name }}
+
+                        <img src="{{ asset('storage/' . $partner->logo_url) }}"
+                             class="w-20 h-20 object-cover rounded-lg">
+
+                    </td>
+
+                    <td class="p-3">
+                        {{ $partner->name }}
                     </td>
 
                     <td class="p-3">
 
                         <div class="flex justify-center gap-2">
 
-                            {{-- BUTTON EDIT --}}
+                            {{-- EDIT --}}
                             <button
-                                onclick="openModal({{ $category->id }}, '{{ $category->name }}')"
-                                class="bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-white">
+                                onclick="openModal(
+                                    {{ $partner->id }},
+                                    '{{ $partner->name }}'
+                                )"
+                                class="bg-yellow-400 text-white px-3 py-1 rounded">
 
                                 Edit
 
                             </button>
 
                             {{-- DELETE --}}
-                            <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                            <form action="{{ route('admin.partners.destroy', $partner->id) }}"
                                   method="POST">
 
                                 @csrf
                                 @method('DELETE')
 
                                 <button type="submit"
-                                        onclick="return confirm('Yakin hapus data?')"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                                        onclick="return confirm('Yakin hapus?')"
+                                        class="bg-red-500 text-white px-3 py-1 rounded">
 
                                     Hapus
 
@@ -151,10 +158,10 @@
 
                 <tr>
 
-                    <td colspan="3"
+                    <td colspan="4"
                         class="text-center p-5 text-gray-500">
 
-                        Belum ada data kategori
+                        Data partner kosong
 
                     </td>
 
@@ -177,11 +184,12 @@
     <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
 
         <h2 class="text-2xl font-bold mb-4">
-            Edit Kategori
+            Edit Partner
         </h2>
 
         <form id="editForm"
-              method="POST">
+              method="POST"
+              enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
@@ -189,20 +197,24 @@
             <input type="text"
                    id="editName"
                    name="name"
-                   class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4">
+
+            <input type="file"
+                   name="logo_url"
+                   class="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4">
 
             <div class="flex justify-end gap-2">
 
                 <button type="button"
                         onclick="closeModal()"
-                        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
+                        class="bg-gray-400 text-white px-4 py-2 rounded">
 
                     Batal
 
                 </button>
 
                 <button type="submit"
-                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
+                        class="bg-yellow-500 text-white px-4 py-2 rounded">
 
                     Update
 
@@ -226,7 +238,7 @@
         document.getElementById('editName').value = name;
 
         document.getElementById('editForm').action =
-            `/admin/categories/${id}`;
+            `/admin/partners/${id}`;
     }
 
     function closeModal()

@@ -19,7 +19,7 @@
             </h1>
 
             <p class="text-lg text-slate-600 max-w-md leading-relaxed">
-                Akses mudah ke berbagai konser, seminar, dan workshop pilihan. 
+                Akses mudah ke berbagai konser, seminar, dan workshop pilihan.
                 Transaksi aman, tiket langsung masuk ke emailmu.
             </p>
 
@@ -37,11 +37,11 @@
 
         <div class="flex-1 order-1 lg:order-2 relative">
             <div class="absolute -top-6 -right-6 w-32 h-32 bg-indigo-200 rounded-full blur-3xl opacity-50"></div>
-            
+
             <div class="relative overflow-hidden rounded-[2.5rem] border-[8px] border-white shadow-2xl">
                 <img src="assets/concert.png" alt="Featured Event"
                     class="w-full object-cover aspect-[4/5] hover:scale-105 transition-transform duration-700">
-                
+
                 <div class="absolute bottom-6 left-6 right-6 p-5 bg-white/80 backdrop-blur-md rounded-2xl border border-white/50 shadow-lg">
                     <div class="flex items-center gap-4">
                         <div class="p-2 bg-indigo-600 rounded-lg text-white">
@@ -60,7 +60,7 @@
     </section>
 
     <section id="explore" class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100">
-        
+
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <div class="space-y-2">
                 <h2 class="text-3xl font-black text-slate-900">Event Terdekat</h2>
@@ -68,7 +68,7 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                <a href="/" 
+                <a href="/"
                    class="px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 {{ !request('category') ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
                     Semua Event
                 </a>
@@ -86,10 +86,10 @@
             @foreach($events as $event)
                 <div class="group relative bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-500">
                     <div class="relative aspect-[4/5] overflow-hidden">
-                        <img src="https://placehold.co/600x800" 
+                        <img src="https://placehold.co/600x800"
                              alt="{{ $event->title }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        
+
                         <div class="absolute top-5 left-5">
                             <span class="px-4 py-1.5 bg-white/90 backdrop-blur-md text-indigo-600 text-xs font-black rounded-lg uppercase shadow-sm">
                                 {{ $event->category->name }}
@@ -116,8 +116,8 @@
                                     Rp{{ number_format($event->price, 0, ',', '.') }}
                                 </p>
                             </div>
-                            
-                            <a href="{{ url('event/'.$event->id) }}" 
+
+                            <a href="{{ url('event/'.$event->id) }}"
                                class="inline-flex items-center justify-center w-12 h-12 bg-slate-50 text-slate-900 rounded-full group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -129,5 +129,36 @@
             @endforeach
         </div>
     </section>
+    {{-- PARTNER SECTION --}}
+<section class="py-16">
+
+    <div class="max-w-6xl mx-auto px-6">
+
+        <h2 class="text-3xl font-bold mb-10 text-center">
+            Partner Kami
+        </h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+            @foreach($partners as $partner)
+
+                <div class="bg-white shadow-lg rounded-xl p-5 flex flex-col items-center hover:shadow-2xl transition">
+
+                    <img src="{{ asset('storage/' . $partner->logo_url) }}"
+                         class="w-28 h-28 object-cover mb-4 rounded-xl">
+
+                    <h3 class="font-semibold text-lg text-center">
+                        {{ $partner->name }}
+                    </h3>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+    </div>
+
+</section>
 
 @endsection
