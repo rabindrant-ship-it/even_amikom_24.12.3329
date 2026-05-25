@@ -196,6 +196,28 @@
         </div>
     </section>
 
+    <section class="py-16 relative z-10 bg-white border-t border-slate-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-10 text-center text-slate-900">
+                Partner Kami
+            </h2>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                @foreach($partners as $partner)
+                    <div class="bg-white shadow-lg rounded-xl p-5 flex flex-col items-center hover:shadow-2xl transition border border-slate-100">
+                        <img src="{{ asset('storage/' . $partner->logo_url) }}"
+                             class="w-28 h-28 object-contain mb-4 rounded-xl"
+                             alt="{{ $partner->name }}">
+
+                        <h3 class="font-semibold text-lg text-center text-slate-800">
+                            {{ $partner->name }}
+                        </h3>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-indigo-900 text-indigo-100 py-20 px-6 mt-20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
