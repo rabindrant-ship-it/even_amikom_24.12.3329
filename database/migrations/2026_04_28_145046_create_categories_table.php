@@ -27,3 +27,4 @@ $table->timestamps();
         Schema::dropIfExists('categories');
     }
 };
+
